@@ -52,13 +52,11 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
 
     switch (cmd) {
         case cmd_enter: {
-          
             st.push_back(static_cast<uint16_t>(value));
             return make_shared<uint16_t>(st.back());
         }
 
         case cmd_clear: {
-           
             st.clear();
             return nullptr;
         }
@@ -72,26 +70,27 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
         case cmd_top: {
             return top_ptr();
         }
-
+//start change
         case cmd_left_shift: {
-            
-            if (!need_n(1)) return nullptr;
-            uint16_t a = st.back(); st.pop_back();
-            uint16_t amt = static_cast<uint16_t>(value % 16);
-            uint16_t r = static_cast<uint16_t>(a << amt);
+            if (!need_n(2)) return nullptr;
+            uint16_t b = st.back(); st.pop_back();         
+            uint16_t a = st.back(); st.pop_back();           
+            uint16_t amt = static_cast<uint16_t>(b & 0xF);   
+            uint16_t r = static_cast<uint16_t>((a << amt) & 0xFFFF);
             st.push_back(r);
             return make_shared<uint16_t>(r);
         }
 
         case cmd_right_shift: {
-            if (!need_n(1)) return nullptr;
-            uint16_t a = st.back(); st.pop_back();
-            uint16_t amt = static_cast<uint16_t>(value % 16);
-            uint16_t r = static_cast<uint16_t>(a >> amt);
+            if (!need_n(2)) return nullptr;
+            uint16_t b = st.back(); st.pop_back();           
+            uint16_t a = st.back(); st.pop_back();          
+            uint16_t amt = static_cast<uint16_t>(b & 0xF);   
+            uint16_t r = static_cast<uint16_t>(a >> amt);    
             st.push_back(r);
             return make_shared<uint16_t>(r);
         }
-
+//end change
         case cmd_or: {
             if (!need_n(2)) return nullptr;
             uint16_t b = st.back(); st.pop_back();
