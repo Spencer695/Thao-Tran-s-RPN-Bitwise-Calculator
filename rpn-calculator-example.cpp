@@ -37,15 +37,92 @@ vector<string> command_name = {"cmd_enter",       "cmd_clear", "cmd_pop", "cmd_t
                                "cmd_right_shift", "cmd_or",    "cmd_and", "cmd_add"};
 uint8_t const width = 16U;
 
-shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
-    // this is example code which returns a (smart shared) pointer to 16-bit value
-    (void)cmd;
-    (void)value;
-    uint16_t val = 0b1001100100000011;
-    shared_ptr<uint16_t> result = make_shared<uint16_t>(val);
-    return result;
+//Edited code listed below
+shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
+    static vector<uint16_t> st;
+
+    auto top_ptr = [&]() -> shared_ptr<uint16_t> {
+        if (st.empty()) return nullptr;
+        return make_shared<uint16_t>(st.back());
+    };
+
+    auto need_n = [&](size_t n) -> bool {
+        return st.size() >= n;
+    };
+
+    switch (cmd) {
+        case cmd_enter: {
+          
+            st.push_back(static_cast<uint16_t>(value));
+            return make_shared<uint16_t>(st.back());
+        }
+
+        case cmd_clear: {
+           
+            st.clear();
+            return nullptr;
+        }
+
+        case cmd_pop: {
+            if (st.empty()) return nullptr;
+            st.pop_back();
+            return top_ptr();
+        }
+
+        case cmd_top: {
+            return top_ptr();
+        }
+
+        case cmd_left_shift: {
+            
+            if (!need_n(1)) return nullptr;
+            uint16_t a = st.back(); st.pop_back();
+            uint16_t amt = static_cast<uint16_t>(value % 16);
+            uint16_t r = static_cast<uint16_t>(a << amt);
+            st.push_back(r);
+            return make_shared<uint16_t>(r);
+        }
+
+        case cmd_right_shift: {
+            if (!need_n(1)) return nullptr;
+            uint16_t a = st.back(); st.pop_back();
+            uint16_t amt = static_cast<uint16_t>(value % 16);
+            uint16_t r = static_cast<uint16_t>(a >> amt);
+            st.push_back(r);
+            return make_shared<uint16_t>(r);
+        }
+
+        case cmd_or: {
+            if (!need_n(2)) return nullptr;
+            uint16_t b = st.back(); st.pop_back();
+            uint16_t a = st.back(); st.pop_back();
+            uint16_t r = static_cast<uint16_t>(a | b);
+            st.push_back(r);
+            return make_shared<uint16_t>(r);
+        }
+
+        case cmd_and: {
+            if (!need_n(2)) return nullptr;
+            uint16_t b = st.back(); st.pop_back();
+            uint16_t a = st.back(); st.pop_back();
+            uint16_t r = static_cast<uint16_t>(a & b);
+            st.push_back(r);
+            return make_shared<uint16_t>(r);
+        }
+
+        case cmd_add: {
+            if (!need_n(2)) return nullptr;
+            uint16_t b = st.back(); st.pop_back();
+            uint16_t a = st.back(); st.pop_back();
+            uint16_t r = static_cast<uint16_t>(a + b); 
+            st.push_back(r);
+            return make_shared<uint16_t>(r);
+        }
+    }
+    return nullptr;
 }
 
+//Do not edit code below
 void header() {
     cout << left << setw(table_width[0]) << setfill(' ') << "pass/fail";
     cout << left << setw(table_width[1]) << setfill(' ') << "command";
