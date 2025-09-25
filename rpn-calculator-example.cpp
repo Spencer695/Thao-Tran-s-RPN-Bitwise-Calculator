@@ -38,7 +38,7 @@ vector<string> command_name = {"cmd_enter", "cmd_clear",      "cmd_pop",
                                "cmd_or",    "cmd_and",        "cmd_add"};
 uint8_t const width = 16U;
 
-//RPN calcultor code start
+//RPN calculator code start
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
   static vector<uint16_t> st;
 
