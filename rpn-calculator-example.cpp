@@ -70,7 +70,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
         case cmd_top: {
             return top_ptr();
         }
-//start change
+
         case cmd_left_shift: {
             if (!need_n(2)) return nullptr;
             uint16_t b = st.back(); st.pop_back();         
@@ -90,7 +90,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
             st.push_back(r);
             return make_shared<uint16_t>(r);
         }
-//end change
+
         case cmd_or: {
             if (!need_n(2)) return nullptr;
             uint16_t b = st.back(); st.pop_back();
@@ -108,18 +108,27 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
             st.push_back(r);
             return make_shared<uint16_t>(r);
         }
-
+    //start change
         case cmd_add: {
             if (!need_n(2)) return nullptr;
-            uint16_t b = st.back(); st.pop_back();
-            uint16_t a = st.back(); st.pop_back();
-            uint16_t r = static_cast<uint16_t>(a + b); 
+            uint16_t b = st.back(); st.pop_back();   
+            uint16_t a = st.back(); st.pop_back();  
+            uint32_t sum = static_cast<uint32_t>(a) + static_cast<uint32_t>(b);
+            if (sum > 0xFFFFu) {
+                st.push_back(a);
+                st.push_back(b);
+                return nullptr;
+            }
+
+            uint16_t r = static_cast<uint16_t>(sum);
             st.push_back(r);
             return make_shared<uint16_t>(r);
         }
     }
+
     return nullptr;
 }
+//end change
 
 //Do not edit code below
 void header() {
