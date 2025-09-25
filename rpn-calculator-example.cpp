@@ -12,8 +12,7 @@
 
 using namespace std;
 
-#define INPUT_CSV_FILE                                                         \
-  "C:/Users/Guine/OneDrive/Desktop/calculator Code/rpn-input.csv"
+#define INPUT_CSV_FILE "C:/Users/Guine/OneDrive/Desktop/calculator Code/rpn-input.csv"
 
 // test controls
 #define MIN_VALUE 0
@@ -39,6 +38,7 @@ vector<string> command_name = {"cmd_enter", "cmd_clear",      "cmd_pop",
                                "cmd_or",    "cmd_and",        "cmd_add"};
 uint8_t const width = 16U;
 
+//RPN calcultor code start
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
   static vector<uint16_t> st;
 
@@ -144,6 +144,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value /*=0*/) {
 
   return nullptr;
 }
+//RPN calculator code ends
 
 void header() {
   cout << left << setw(table_width[0]) << setfill(' ') << "pass/fail";
