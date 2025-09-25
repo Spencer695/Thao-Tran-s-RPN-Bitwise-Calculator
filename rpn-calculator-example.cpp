@@ -1,5 +1,4 @@
 #include <stdint.h>
-
 #include <bitset>
 #include <cmath>
 #include <cstdint>
@@ -13,11 +12,7 @@
 
 using namespace std;
 
-/*
- * *** STUDENTS WILL NEED TO CHANGE INPUT_CSV_FILE PATH BELOW TO POINT TO THE rpn-input.csv FILE ***
- * *** ON THEIR LAPTOP/COMPUTER ***
- */
-#define INPUT_CSV_FILE "/class-cplusplus/rpn-bitwise-calculator/rpn-input.csv"
+#define INPUT_CSV_FILE "C:/Users/Desktop/calculator-Code/rpn-input.csv"
 
 // test controls
 #define MIN_VALUE 0
@@ -42,21 +37,14 @@ vector<string> command_name = {"cmd_enter",       "cmd_clear", "cmd_pop", "cmd_t
                                "cmd_right_shift", "cmd_or",    "cmd_and", "cmd_add"};
 uint8_t const width = 16U;
 
-/*
- * *** STUDENTS SHOULD WRITE CODE FOR THIS FUNCTION ***
- * Students should create or add any data structures needed.
- * Students should create or add any functions or classes they may need.
- */
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
     // this is example code which returns a (smart shared) pointer to 16-bit value
+    (void)cmd;
+    (void)value;
     uint16_t val = 0b1001100100000011;
     shared_ptr<uint16_t> result = make_shared<uint16_t>(val);
     return result;
 }
-
-/*
- * *** STUDENTS SHOULD NOT NEED TO CHANGE THE CODE BELOW. IT IS A CUSTOM TEST HARNESS. ***
- */
 
 void header() {
     cout << left << setw(table_width[0]) << setfill(' ') << "pass/fail";
